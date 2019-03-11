@@ -1,26 +1,30 @@
+# Importing boto3 and click library #
 import boto3
 import click
 
-session = boto3.Session(profile_name='AntonioAutomation')
+# creating aws s3 session #
+session =  boto3.Session(profile_name='AntonioAutomation')
 s3 = session.resource('s3')
 
+# Creating group for scripts #
 @click.group()
 def cli():
-    "Webotron deploys websites to aws"
     pass
 
-@cli.command('list_buckets')
-def list_buckets():
-    "List my S3 Buckets"
+# Script for listing all s3 buckets #
+@cli.command('list-s3-buckets')
+def list_s3_buckets():
     for bucket in s3.buckets.all():
         print(bucket)
+        "List of all s3 buckets"
 
-@cli.command('list-bucket-objects')
+# Script for listing objets in particulat s3 buckets #
+@cli.command('list-s3-objects')
 @click.argument('bucket')
-def list_bucket_objects(bucket):
-    "List ALL s3 bucket objects"
+def list_s3_objects(bucket):
     for obj in s3.Bucket(bucket).objects.all():
         print(obj)
+        "Listing objects from named s3 bucket"
 
 if __name__ == '__main__':
     cli()
